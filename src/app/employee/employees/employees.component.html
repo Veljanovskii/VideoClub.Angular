@@ -1,0 +1,86 @@
+<h1>Employees</h1>
+
+<div>
+  <mat-form-field class="e-form-field" appearance="fill">
+    <mat-label>Search employee name</mat-label>
+    <input matInput type="text" [formControl]="search">
+    <button id="buttonx" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+
+<div class="e-container mat-elevation-z8">
+  <div class="e-loading-shade"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="e-rate-limit-reached" *ngIf="isRateLimitReached">
+      API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="e-table-container">
+
+    <table mat-table [dataSource]="data" class=""
+           matSort matSortActive="Id" matSortDisableClear matSortDirection="desc">
+
+      <!-- FirstName Column -->
+    <ng-container matColumnDef="FirstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> First name </th>
+      <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+    </ng-container>
+
+    <!-- LastName Year Column -->
+    <ng-container matColumnDef="LastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Last name </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <!-- PhoneNumber Column -->
+    <ng-container matColumnDef="PhoneNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Phone number </th>
+      <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="Role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Role </th>
+      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+    </ng-container>
+
+    <!-- Active Column -->
+    <ng-container matColumnDef="Active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Active </th>
+      <td mat-cell *matCellDef="let element"> {{element.active?'Yes':'No'}} </td>
+    </ng-container>
+
+    <!-- Options Column -->
+    <ng-container matColumnDef="Options">
+      <th mat-header-cell *matHeaderCellDef> Options </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <a mat-button (click)="openDialog(dialogAction.Edit, this.data[i])" color="accent" id="editEmployee">Edit</a>
+        <a *ngIf="element.active" mat-button (click)="openDialog(dialogAction.Delete, this.data[i].id)" id="deleteEmployee1">{{element.active?'Disable':'Enable'}}</a>
+        <a *ngIf="!element.active" mat-button (click)="openDialog(dialogAction.Delete, this.data[i].id)" id="deleteEmployee2">{{element.active?'Disable':'Enable'}}</a>
+      </td>
+    </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 [length]="resultsLength"
+                 showFirstLastButtons
+                 aria-label="Select page">
+  </mat-paginator>
+</div>
+
+<button mat-raised-button id="addEmployee" (click)="openDialog(dialogAction.Add, {})">Add New Employee</button>

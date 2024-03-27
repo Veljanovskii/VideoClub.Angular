@@ -1,0 +1,102 @@
+<h1>Users</h1>
+
+<div>
+  <mat-form-field class="e-form-field" appearance="fill">
+    <mat-label>Search user name</mat-label>
+    <input matInput type="text" [formControl]="search">
+    <button id="buttonx" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div class="e-container mat-elevation-z8">
+  <div class="e-loading-shade"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="e-rate-limit-reached" *ngIf="isRateLimitReached">
+      API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="e-table-container">
+
+    <table mat-table [dataSource]="data" class=""
+           matSort matSortActive="Id" matSortDisableClear matSortDirection="desc" multiTemplateDataRows>
+
+    <!-- Profile Picture Column -->
+    <ng-container matColumnDef="ProfilePicture">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> </th>
+      <td mat-cell *matCellDef="let element"> <img *ngIf="element.profilePicture" class="small-preview" src={{element.profilePicture}}> </td>
+    </ng-container>
+
+    <!-- FirstName Column -->
+    <ng-container matColumnDef="FirstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> First name </th>
+      <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+    </ng-container>
+
+    <!-- LastName Year Column -->
+    <ng-container matColumnDef="LastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Last name </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="Address">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Address </th>
+      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+    </ng-container>
+
+    <!-- Idnumber Column -->
+    <ng-container matColumnDef="Idnumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Id number </th>
+      <td mat-cell *matCellDef="let element"> {{element.idnumber}} </td>
+    </ng-container>
+
+    <!-- MaritalStatus Column -->
+    <ng-container matColumnDef="MaritalStatus">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Marital status </th>
+      <td mat-cell *matCellDef="let element"> {{element.maritalStatus}} </td>
+    </ng-container>
+
+    <!-- InsertDate Column -->
+    <ng-container matColumnDef="InsertDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Insert date </th>
+      <td mat-cell *matCellDef="let element"> {{element.insertDate | date: 'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element;" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div *ngIf="element.profilePicture" class="image-container">
+            <img class="" src={{element.profilePicture}}>
+          </div>
+          <div class="example-element-description">
+            {{element.firstName}} {{element.lastName}}
+            <a mat-button (click)="openDialog(dialogAction.Edit, element)" color="accent" id="editUser">Edit</a>
+            <a mat-button (click)="openDialog(dialogAction.Delete, element.userId)" color="danger" id="deleteUser">Delete</a>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 [length]="resultsLength"
+                 showFirstLastButtons
+                 aria-label="Select page">
+  </mat-paginator>
+</div>
+
+<button mat-raised-button id="addUser" (click)="openDialog(dialogAction.Add, {})">Add New User</button>

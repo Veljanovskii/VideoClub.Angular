@@ -1,0 +1,36 @@
+<mat-nav-list>
+  <ul class="navigation-items">
+    <li>
+      <a mat-list-item routerLink="/" (click)="onSidenavClose()">
+        <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
+    </a>
+    </li>
+    <li *ngIf="this.authService.tokenValid && (this.authService.roleFromToken == 'Administrator' || this.authService.roleFromToken == 'User')">
+      <a mat-list-item routerLink="/movies" (click)="onSidenavClose()">
+        <mat-icon>movie</mat-icon> <span class="nav-caption">Movies</span>
+    </a>
+    </li>
+    <li *ngIf="this.authService.tokenValid && (this.authService.roleFromToken == 'Administrator' || this.authService.roleFromToken == 'User')">
+      <a mat-list-item routerLink="/users" (click)="onSidenavClose()">
+        <mat-icon>supervisor_account</mat-icon><span class="nav-caption">Users</span>
+    </a>
+    </li>
+    <li *ngIf="this.authService.tokenValid && this.authService.roleFromToken == 'Administrator'">
+      <a mat-list-item routerLink="/employees" (click)="onSidenavClose()">
+        <mat-icon>assignment_ind</mat-icon><span class="nav-caption">Employees</span>
+      </a>
+    </li>
+
+    <li *ngIf="!this.authService.tokenValid">
+      <a mat-list-item routerLink="/login" (click)="onSidenavClose()">
+        <mat-icon>login</mat-icon><span class="nav-caption">Login</span>
+      </a>
+    </li>
+
+    <li *ngIf="this.authService.tokenValid">
+      <a mat-list-item routerLink="/" (click)="this.authService.logOut()" (click)="onSidenavClose()">
+        <mat-icon>logout</mat-icon><span class="nav-caption">Logout</span>
+      </a>
+    </li>
+  </ul>
+</mat-nav-list>

@@ -1,0 +1,91 @@
+<h1>Movies</h1>
+
+<div>
+  <mat-form-field class="e-form-field" appearance="fill">
+    <mat-label>Search movie title</mat-label>
+    <input matInput type="text" [formControl]="search">
+    <button id="buttonx" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div class="e-container mat-elevation-z8">
+  <div class="e-loading-shade"
+       *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <!-- <div class="e-rate-limit-reached" *ngIf="isRateLimitReached">
+      API rate limit has been reached. It will be reset in one minute.
+    </div> -->
+  </div>
+
+  <div class="e-table-container">
+
+    <table mat-table [dataSource]="dataSource" class=""
+           matSort matSortActive="Id" matSortDisableClear matSortDirection="desc" multiTemplateDataRows>
+
+    <!-- Avatar Column -->
+    <ng-container matColumnDef="Avatar">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> </th>
+      <td mat-cell *matCellDef="let element"> <img *ngIf="element.avatar" class="small-preview" src={{element.avatar}}> </td>
+    </ng-container>
+
+      <!-- Caption Column -->
+    <ng-container matColumnDef="Caption">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Caption </th>
+      <td mat-cell *matCellDef="let element"> {{element.caption}} </td>
+    </ng-container>
+
+    <!-- Release Year Column -->
+    <ng-container matColumnDef="Release">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Release year </th>
+      <td mat-cell *matCellDef="let element"> {{element.releaseYear}} </td>
+    </ng-container>
+
+    <!-- Length Column -->
+    <ng-container matColumnDef="Length">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Length </th>
+      <td mat-cell *matCellDef="let element"> {{element.movieLength}} minutes </td>
+    </ng-container>
+
+    <!-- Insert date Column -->
+    <ng-container matColumnDef="Insert">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Insert date </th>
+      <td mat-cell *matCellDef="let element"> {{element.insertDate | date: 'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element;" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div *ngIf="element.avatar" class="image-container">
+            <img class="" src={{element.avatar}}>
+          </div>
+          <div class="example-element-description">
+            {{element.caption}}
+            <a mat-button (click)="openEditDialog(element)" color="accent" id="editMovie">Edit</a>
+            <a mat-button (click)="openDeleteDialog(element.movieId)" color="danger" id="deleteMovie">Delete</a>
+          </div>
+
+        </div>
+      </td>
+    </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 [length]="resultsLength"
+                 showFirstLastButtons
+                 aria-label="Select page">
+  </mat-paginator>
+</div>
+
+<button mat-raised-button id="addMovie" (click)="openAddDialog()">Add New Movie</button>

@@ -1,0 +1,19 @@
+#addMovie {
+  background-color:rgba(42, 20, 241, 0.863);
+  color: white !important;
+  margin: 2%;
+}
+
+#addMovie:disabled,
+button[disabled]{
+  background-color: #cccccc;
+}
+
+#cancel{
+  background-color: #3f525c !important;
+  color: white !important;
+}
+
+.mat-dialog-content {
+  overflow-y: hidden !important;
+}

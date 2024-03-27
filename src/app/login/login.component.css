@@ -1,0 +1,51 @@
+:host {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.usersInfo {
+  display: flex;
+  margin-top: 10px;
+}
+
+.mat-card-title {
+  padding: 3%;
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+mat-card {
+  margin-top: 50px;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  color: red;
+  padding-left: 10px;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#login {
+  background-color:rgba(42, 20, 241, 0.863);
+  color: white !important;
+  margin: 2%;
+}
+
+#login:disabled,
+button[disabled]{
+  background-color: #cccccc;
+}

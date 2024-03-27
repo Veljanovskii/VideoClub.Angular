@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+  <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+          <mat-icon>menu</mat-icon>
+      </button>
+  </div>
+  <div class="navigation-items">
+      <a routerLink="/">Movie Library</a>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="start" fxHide.xs>
+      <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+          <li *ngIf="this.authService.tokenValid && (this.authService.roleFromToken == 'Administrator' || this.authService.roleFromToken == 'User')">
+              <a routerLink="/movies">Movies</a>
+          </li>
+          <li *ngIf="this.authService.tokenValid && (this.authService.roleFromToken == 'Administrator' || this.authService.roleFromToken == 'User')">
+              <a routerLink="/users">Users</a>
+          </li>
+          <li *ngIf="this.authService.tokenValid && this.authService.roleFromToken == 'Administrator'">
+            <a routerLink="/employees">Employees</a>
+        </li>
+      </ul>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+    <ul *ngIf="this.authService.tokenValid" fxLayout class="navigation-items">{{ this.authService.roleFromToken }}</ul>
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+        <li *ngIf="!this.authService.tokenValid">
+            <a routerLink="/login">Login</a>
+        </li>
+        <li *ngIf="this.authService.tokenValid">
+          <a routerLink="/" (click)="this.authService.logOut()">Logout</a>
+      </li>
+    </ul>
+</div>
+</mat-toolbar>

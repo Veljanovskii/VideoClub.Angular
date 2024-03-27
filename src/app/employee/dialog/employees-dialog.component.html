@@ -1,0 +1,63 @@
+<h1 *ngIf="this.action == 1" mat-dialog-title>Add a new user</h1>
+<h1 *ngIf="this.action == 2" mat-dialog-title>Edit user</h1>
+<h1 *ngIf="this.action == 3" this.dialog.width='375px' mat-dialog-title>Are you sure you want to do this action?</h1>
+
+<div *ngIf="this.action == 1 || this.action == 2" mat-dialog-content>
+  <form [formGroup]="dialog" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill">
+      <mat-label>First name</mat-label>
+      <input matInput formControlName="firstName">
+      <mat-error *ngIf="dialog.controls['firstName'].invalid">Please enter a valid first name</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Last name</mat-label>
+      <input matInput formControlName="lastName">
+      <mat-error *ngIf="dialog.controls['lastName'].invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="dialog.controls['email'].invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password">
+      <mat-error *ngIf="dialog.controls['password'].invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone number</mat-label>
+      <input matInput formControlName="phoneNumber">
+      <mat-error *ngIf="dialog.controls['phoneNumber'].invalid"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of validRoles" [value]="role">
+          {{role}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="dialog.controls['role'].invalid"></mat-error>
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button color="primary" id="submit" type="submit" [disabled]="!dialog.valid" [mat-dialog-close]="true">Submit</button>
+      <a id="cancel" mat-button [mat-dialog-close] cdkFocusInitial>Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+<div *ngIf="this.action == 3" mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button color="primary" id="submit" (click)="this.onSubmit()" [mat-dialog-close]="true">Yes</button>
+    <a id="cancel" mat-button [mat-dialog-close] cdkFocusInitial>No</a>
+  </div>
+
+</div>

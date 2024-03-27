@@ -1,0 +1,73 @@
+.mat-stepper-vertical {
+  margin: 4%;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+.recap {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.selection {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  width: 90%;
+}
+
+.errorMessage {
+  margin: 1%;
+  color: red;
+}
+
+.rentSuccessfull {
+  margin: 1%;
+  color: green;
+}
+
+.rent-return {
+  margin-top: 4%;
+  margin-left: 4%;
+}
+
+::ng-deep .mat-vertical-stepper-header{
+  pointer-events: none !important;
+}
+
+.movie-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+mat-card {
+  flex: 0 1 calc(25% - 80px);
+  margin: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+mat-card-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-checkbox {
+  margin-left: auto;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  flex-grow: 1;
+  padding: 5%;
+}

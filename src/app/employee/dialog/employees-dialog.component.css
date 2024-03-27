@@ -1,0 +1,43 @@
+#submit {
+  background-color:rgba(42, 20, 241, 0.863);
+  color: white !important;
+  margin: 2%;
+}
+
+#submit:disabled,
+button[disabled]{
+  background-color: #cccccc;
+}
+
+mat-form-field {
+  width: 250px;
+}
+
+#cancel{
+  background-color: #3f525c !important;
+  color: white !important;
+}
+
+::ng-deep .mat-button-focus-overlay {
+  display: none;
+}
+
+mat-form-field {
+  margin: 2%;
+}
+
+.mat-dialog-content {
+  overflow-y: hidden !important;
+}
+
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}
+
+::ng-deep button.mat-calendar-period-button {
+  display: none;
+}

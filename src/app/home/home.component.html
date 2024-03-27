@@ -1,0 +1,100 @@
+<h1 class="rent-return">{{rentDialog ? "Rent movies" : "Return movies"}}</h1>
+<button mat-raised-button (click)="rentDialog = !rentDialog" id="toggle-linear" class="rent-return">
+  {{!rentDialog ? 'Rent movies' : 'Return movies'}}
+</button>
+
+<mat-stepper *ngIf="rentDialog" orientation="vertical" [linear]="isLinear" #stepperRent (selectionChange)="onRentStepChange($event)">
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup" (ngSubmit)="checkValidUser()">
+      <ng-template matStepLabel>Please enter your ID number</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>ID number</mat-label>
+        <input matInput formControlName="IDnumber" placeholder="123456789" required>
+      </mat-form-field>
+      <div>
+        <button type="submit" [disabled]="!selectedIDnumber" mat-button>Next</button>
+        <span class="errorMessage">{{this.errorMessage}}</span>
+      </div>
+    </form>
+  </mat-step>  
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Select movies to rent</ng-template>
+      <div class="movie-container">
+        <mat-card *ngFor="let movie of fetchedMoviesList" [class.disabled]="!movie.availableForRental">
+          <mat-card-header>
+            <mat-card-title>{{ movie.caption }}</mat-card-title>
+            <mat-checkbox class="select-checkbox" [checked]="selectedMovies.includes(movie.movieId)" [disabled]="!movie.availableForRental" (change)="onMovieSelectionChange(movie)">
+            </mat-checkbox>
+          </mat-card-header>
+          <img mat-card-image src="{{ movie.avatar }}" alt="Movie image">
+        </mat-card>
+      </div>      
+      <div>
+        <button mat-button (click)="previousRentStep()">Back</button>
+        <button [disabled]="selectedMovies.length === 0" mat-button (click)="nextRentStep()">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  
+  <mat-step>
+    <ng-template matStepLabel>Summary</ng-template>
+    <div class="recap">
+      <p>User {{selectedIDnumber}} has selected these movies to rent:</p>
+      <ul *ngFor="let movie of showMovies">
+        <li>{{movie.caption}}</li>
+      </ul>
+    </div>
+    <div>
+      <button mat-button (click)="previousRentStep()">Back</button>
+      <button mat-button (click)="rentMovies()">Rent movies</button>
+      <mat-spinner [diameter]="30" *ngIf="this.isLoadingResults"></mat-spinner>
+      <span class="errorMessage">{{this.errorMessage}}</span>
+    </div>
+  </mat-step>
+</mat-stepper>
+
+<mat-stepper *ngIf="!rentDialog" orientation="vertical" [linear]="isLinear" #stepperReturn (selectionChange)="onReturnStepChange($event)">
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup" (ngSubmit)="checkValidUser()">
+      <ng-template matStepLabel>Please enter your ID number</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>ID number</mat-label>
+        <input matInput formControlName="IDnumber" placeholder="123456789" required>
+      </mat-form-field>
+      <div>
+        <button type="submit" [disabled]="!selectedIDnumber" mat-button>Next</button>
+        <span class="errorMessage">{{this.errorMessage}}</span>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Select movies to return</ng-template>
+      <mat-selection-list #selection class="selection">
+        <mat-list-option *ngFor="let movie of fetchedMoviesList" [value]="movie">
+          {{movie.caption}}
+        </mat-list-option>
+      </mat-selection-list>
+      <div>
+        <button mat-button (click)="previousReturnStep()">Back</button>
+        <button [disabled]="!selection.selectedOptions.selected[0]" mat-button (click)="nextReturnStep()">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Summary</ng-template>
+    <div class="recap">
+      <p>User {{selectedIDnumber}} has selected these movies to return:</p>
+      <ul *ngFor="let movie of selection.selectedOptions.selected">
+        <li>{{movie.value.caption}}</li>
+      </ul>
+    </div>
+    <div>
+      <button mat-button (click)="previousReturnStep()">Back</button>
+      <button mat-button (click)="returnMovies()">Return movies</button>
+      <mat-spinner [diameter]="30" *ngIf="this.isLoadingResults"></mat-spinner>
+      <span class="errorMessage">{{this.errorMessage}}</span>
+    </div>
+  </mat-step>
+</mat-stepper>
